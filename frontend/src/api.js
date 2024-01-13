@@ -40,13 +40,50 @@ class JoblyApi {
 
   static async getCompany(handle) {
     let res = await this.request(`companies/${handle}`);
+    console.log(res)
     return res.company;
   }
 
-  // obviously, you'll add a lot here ...
+  /** Get list of all companies */
+  static async getCompanies() {
+    let res = await this.request(`companies`);
+    return res.companies.jobs;
+  }
+
+  /** Get list of all jobs */
+  static async getJobs() {
+    let res = await this.request(`jobs`);
+    return res.jobs;
+  }
+
+  /** Get one companies jobs */
+  static async getCompanyJobs(handle) {
+    let res = await this.request(`companies/${handle}`);
+    console.log(res.company)
+    return res.company.jobs;
+  }
+
+  /** Get list of all users */
+  static async getUsers() {
+    let res = await this.request(`users`);
+    return res.users;
+  }
+
+  /** Get a users details by username*/
+  static async getUser(username) {
+    let res = await this.request(`users/${username}`);
+    return res.user;
+  }
+  
+  static async updateUser(username, data, method="patch"){
+    let res = await this.request(`users/${username}`);
+    return res.user;
+  }
 }
 
 // for now, put token ("testuser" / "password" on class)
 JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
     "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+
+export default JoblyApi;
