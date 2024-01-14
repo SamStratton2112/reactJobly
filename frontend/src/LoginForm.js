@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 const LoginForm = ()=>{
     const nav = useNavigate()
-    const {setUser} = useContext(JoblyContext);
+    const {setUser, setLoggedIn} = useContext(JoblyContext);
     const [formData, setFormData] = useState('')
     // handle form input changes
     const handleChange = e =>{
@@ -12,14 +12,15 @@ const LoginForm = ()=>{
         // udate formData values from inputs
         setFormData(data=>({
             ...data, 
-            loggedIn : true,
             [name]: value
         }))
     }
+    console.log(formData)
     // set user to most recent inputs 
     const handleSubmit= e=>{
         e.preventDefault()
         // update user information to submitted form data
+        setLoggedIn(true)
         setUser(formData)
         nav('/')
     }

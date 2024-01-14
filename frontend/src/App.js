@@ -6,8 +6,11 @@ import JoblyContext from './JoblyContext';
 import JoblyApi from './api';
 
 function App() {
+  // move logged in out of current state so we can use it to determine if someone is looged in
   const [user, setUser] = useState({username: '', 
-  password: '', loggedIn: false})
+  password: ''})
+  const [loggedIn, setLoggedIn] = useState(false);
+
   // on initial render token will be null
   const [token, setToken] = useState()
   const [jobs, setJobs] = useState([])
@@ -18,23 +21,27 @@ function App() {
     async function getUserToken(){
       let res = await JoblyApi.getUserToken(user.username,user.password, 'post')
       localStorage.setItem('token', JSON.stringify(res))
-      setToken( res)
+      setToken(res)
     }
     async function registerUserAndGetToken(){
       let res = await JoblyApi.registerUserAndGetToken(user.username,user.password, user.firstName, user.lastName, user.email, 'post')
       localStorage.setItem('token', JSON.stringify(res))
-      setToken( res)
+      setToken(res)
     }
     // if there is no one logged in and the token is empty, get a token and update the value of token triggering the below use effect
-    if(user.loggedIn !== false && token!== ''){
+    if(loggedIn !== false && token!==''){
       // if the user does not have username property getUserToken(), else registerUserAndGetToken()
       if(user.firstName){
         registerUserAndGetToken()
+        setLoggedIn(true)
       }else{
         getUserToken()
+        setLoggedIn(true)
       }
     }
-    }, [user, token])
+    }, [loggedIn, token])
+    console.log(token)
+    console.log(loggedIn)
 
   useEffect(()=>{
     //  get companies and jobs if there is a token
@@ -52,12 +59,16 @@ function App() {
       getJobs()
     }
   },[token])
-  console.log(token)
+  console.log('token:',token)
   console.log(localStorage)
+  console.log('LoggedIn:', loggedIn)
+  useEffect(()=>{
+    setToken(localStorage.getItem('token'))
+  }, [loggedIn])
 
   return (
     <div className="App">
-      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken}}>
+      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn}}>
         <NavBar/>
         <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>
