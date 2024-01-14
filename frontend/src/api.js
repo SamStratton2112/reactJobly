@@ -79,10 +79,11 @@ class JoblyApi {
   }
 
   /** Get a users details by username*/
-  // static async getUser(username) {
-  //   let res = await this.request(`users/${username}`);
-  //   return res.user;
-  // }
+  static async getUser(username) {
+    let res = await this.request(`users/${username}`);
+    console.log(res)
+    // return res.user;
+  }
   
   // static async updateUser(username, data, method="patch"){
   //   let res = await this.request(`users/${username}`);

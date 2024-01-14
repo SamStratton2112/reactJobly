@@ -9,7 +9,7 @@ const NavBar = () =>{
             {user.loggedIn? 
             <nav>
                 <NavLink exact to="/">Home</NavLink>
-                <NavLink exact to={`/${user.username}`}>{user.username}</NavLink>
+                {/* <NavLink exact to={`/profile`}>{user.username}</NavLink> */}
                 <NavLink exact to="/companies">Companies</NavLink>
                 <NavLink exact to="/jobs">Jobs</NavLink>
                 <NavLink exact to={`/logout`}>Logout</NavLink>

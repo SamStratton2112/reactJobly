@@ -25,7 +25,7 @@ const JoblyRoutes = () =>{
         <Route exact key="jobs" path ='/jobs' element={<JobList/>}/>
         <Route exact key="signup" path='/signup' element={<SignupForm/>}/>
         <Route exact key="login" path='/login' element={<LoginForm/>}/>
-        {/* <Route exact key="edit" path='/profile' element={<ProfileEditForm/>}/> */}
+        <Route exact key="edit" path='/profile' element={<ProfileEditForm/>}/>
         <Route exact key="logout" path='/logout' element={<Logout/>}/>
         <Route path='*' key="*" element={<Navigate to='/'/>}/>
     </Routes>

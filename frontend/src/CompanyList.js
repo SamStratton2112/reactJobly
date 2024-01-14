@@ -2,11 +2,12 @@ import CompanyCard from "./CompanyCard";
 import { useContext, useState, useEffect } from "react";
 import JoblyContext from "./JoblyContext";
 import JoblyApi from "./api";
+// import { useNavigate } from "react-router-dom";
 
 
 const CompanyList = ()=>{
     // get list of companies from context
-    const {companies, token} = useContext(JoblyContext);
+    const {companies} = useContext(JoblyContext);
     // use state to track and update value of form
     const [formCo, setFormCo] = useState('');
     // use state to replace formCo with handle compatible version
@@ -15,7 +16,7 @@ const CompanyList = ()=>{
     const [allCos, setAllCos] =useState(companies)
     // use to trigger useEffect that makes api call
     const [totalSubmits, setTotalSubmits] = useState(0)
-
+    // const nav = useNavigate()
     // update value of input field
     const handleChange = (e) =>{
         const {value} = e.target;
@@ -25,7 +26,7 @@ const CompanyList = ()=>{
     useEffect(()=>{
         let handle = formCo.replace(' and ', '-').replace(' ', '-').replace(',', '').toLocaleLowerCase()
         setCurrHandle(handle)
-    }, [formCo]);
+    }, [ totalSubmits ]);
 
     // filter company results from user input
     useEffect(()=>{
@@ -38,7 +39,7 @@ const CompanyList = ()=>{
         }catch(e){
             console.log(e)
         }
-    }, [totalSubmits])
+    }, [currHandle])
 
     // trigger get request
     const handleSubmit=(e)=>{

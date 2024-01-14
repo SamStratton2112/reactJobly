@@ -1,10 +1,19 @@
 import JoblyApi from "./api";
 import {useEffect , useState} from 'react';
 import CompanyJobs from "./CompanyJobs";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import JoblyContext from "./JoblyContext";
 
 // destructure company obj from parent props 
 const CompanyDetails = ({company}) =>{
     // initialize state jobs and setJobs
+    // const {token} = useContext(JoblyContext)
+    // const nav = useNavigate()
+    // if(token === undefined){
+    //     alert('NOT AUTHORIZED')
+    //     nav('/')
+    // }
     const [jobs, setJobs] = useState([])
     useEffect(()=>{
         // use JoblyApi request to get company details which includes jobs
@@ -16,7 +25,7 @@ const CompanyDetails = ({company}) =>{
         // execute function
         getCompany()
         // only on first render 
-    },[])
+    },[company.handle])
 
     return(
         <div>
