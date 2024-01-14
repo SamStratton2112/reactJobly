@@ -11,41 +11,37 @@ const CompanyList = ()=>{
     // use state to track and update value of form
     const [formCo, setFormCo] = useState('');
     // use state to replace formCo with handle compatible version
-    const [currHandle, setCurrHandle] = useState([])
+    const [currHandle, setCurrHandle] = useState()
     // use allCos to show companies results or search results 
     const [allCos, setAllCos] =useState(companies)
-    // use to trigger useEffect that makes api call
-    const [totalSubmits, setTotalSubmits] = useState(0)
-    // const nav = useNavigate()
+    const [initialRender, setInitialRender] = useState(true)
+
     // update value of input field
     const handleChange = (e) =>{
         const {value} = e.target;
         setFormCo(value)
     }
-    // update formCo value to be handle compatible
-    useEffect(()=>{
-        let handle = formCo.replace(' and ', '-').replace(' ', '-').replace(',', '').toLocaleLowerCase()
-        setCurrHandle(handle)
-    }, [ totalSubmits ]);
 
-    // filter company results from user input
-    useEffect(()=>{
-        try{
-            async function getCompany(){
-                const res = await JoblyApi.getCompany(currHandle);
-                setAllCos(res)
-            }
-            getCompany()
-        }catch(e){
-            console.log(e)
-        }
-    }, [currHandle])
+    // // filter company results from user input
+    // useEffect(()=>{
+    //     async function getCompany(){
+    //         const res = await JoblyApi.getCompany(currHandle);
+    //         setAllCos(res)
+    //     }
+    //     if(initialRender){
+    //         getCompany()
+    //     }
+    //     setInitialRender(false) 
+    // }, [currHandle, initialRender])
 
     // trigger get request
     const handleSubmit=(e)=>{
         e.preventDefault()
-        setTotalSubmits(totalSubmits + 1)
-        setFormCo('')
+        let handle = formCo.replace(' and ', '-').replace(' ', '-').replace(',', '').toLocaleLowerCase()
+        console.log(handle)
+        console.log(allCos)
+        // setCurrHandle()
+        // setFormCo('')
     }
     let res = [allCos]
     return(
@@ -64,7 +60,7 @@ const CompanyList = ()=>{
             </form>
             <div>
                 {/* if allCos is undefined then list companies from context */}
-                {allCos === undefined?
+                {allCos === 'undefined'?
                     companies.map(company=><CompanyCard key={company.handle} company={company}/>)
                     : 
                     // else list the results of the request
