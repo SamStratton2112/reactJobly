@@ -1,18 +1,19 @@
 import { NavLink } from "react-router-dom";
-// import { useContext } from "react";
-// import JoblyContext from "./JoblyContext";
+import { useContext } from "react";
+import JoblyContext from "./JoblyContext";
 
 const NavBar = () =>{
-    // const {user} = useContext(JoblyContext)
-    let loggedIn = true
+    const {user} = useContext(JoblyContext)
+    let loggedIn;
+    user.username !== ''? loggedIn=true: loggedIn=false;
     return(
-        <div>
+        <div >
             {loggedIn? 
             <nav>
                 <NavLink exact to="/">Home</NavLink>
                 <NavLink exact to="/companies">Companies</NavLink>
                 <NavLink exact to="/jobs">Jobs</NavLink>
-                {/* <NavLink exact to=`/logout${user.name}`>Logout</NavLink> */}
+                <NavLink exact to={`/logout/${user.username}`}>Logout{user.username} </NavLink>
             </nav>
             :
             <nav>

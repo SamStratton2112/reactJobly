@@ -10,13 +10,15 @@ import { useContext } from 'react';
 import JoblyContext from './JoblyContext';
 
 const JoblyRoutes = () =>{
+    // get all companies from context
     const {companies} = useContext(JoblyContext);
-    console.log(companies)
     return(
     <Routes>
         <Route key="home" exact path ='/' element={<Home/>}/>
         <Route exact key="companies" path ='/companies' element={<CompanyList/>}/>
+        {/* create route for each company handle */}
         {companies.map(company=>(
+            // pass company object down to company details 
             <Route key={company.handle} exact path={`/companies/${company.handle}`} element={<CompanyDetails company={company}/>}/>
         ))}
         <Route exact key="jobs" path ='/jobs' element={<JobList/>}/>

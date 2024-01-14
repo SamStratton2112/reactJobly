@@ -9,30 +9,29 @@ const CompanyList = ()=>{
     const {companies} = useContext(JoblyContext);
     // use state to track and update value of form
     const [formCo, setFormCo] = useState('');
-    // use state to replace formCo with handle compatable version
+    // use state to replace formCo with handle compatible version
     const [currHandle, setCurrHandle] = useState([])
     // use allCos to show companies results or search results 
     const [allCos, setAllCos] =useState(companies)
     // use to trigger useEffect that makes api call
     const [totalSubmits, setTotalSubmits] = useState(0)
-    console.log(allCos)
 
     // update value of input field
     const handleChange = (e) =>{
         const {value} = e.target;
         setFormCo(value)
     }
-    // update formCo value 
+    // update formCo value to be handle compatible
     useEffect(()=>{
         let handle = formCo.replace(' and ', '-').replace(' ', '-').replace(',', '').toLocaleLowerCase()
         setCurrHandle(handle)
     }, [formCo]);
 
+    // filter company results from user input
     useEffect(()=>{
         try{
             async function getCompany(){
                 const res = await JoblyApi.getCompany(currHandle);
-                console.log(res)
                 setAllCos(res)
             }
             getCompany()
@@ -41,14 +40,13 @@ const CompanyList = ()=>{
         }
     }, [totalSubmits])
 
+    // trigger get request
     const handleSubmit=(e)=>{
         e.preventDefault()
-        console.log(currHandle)
         setTotalSubmits(totalSubmits + 1)
         setFormCo('')
     }
     let res = [allCos]
-    console.log(res)
     return(
         <div>
             <form onSubmit={handleSubmit}>
@@ -64,7 +62,12 @@ const CompanyList = ()=>{
                 <button>Submit</button>
             </form>
             <div>
-                {allCos === undefined?companies.map(company=><CompanyCard key={company.handle} company={company}/>): res.map(company=><CompanyCard key={company.handle} company={company}/>)}
+                {/* if allCos is undefined then list companies from context */}
+                {allCos === undefined?
+                    companies.map(company=><CompanyCard key={company.handle} company={company}/>)
+                    : 
+                    // else list the results of the request
+                    res.map(company=><CompanyCard key={company.handle} company={company}/>)}
             </div>
         </div>
     )
