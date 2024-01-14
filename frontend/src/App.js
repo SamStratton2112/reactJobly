@@ -18,12 +18,12 @@ function App() {
     async function getUserToken(){
       let res = await JoblyApi.getUserToken(user.username,user.password, 'post')
       localStorage.setItem('token', JSON.stringify(res))
-      setToken('token', res)
+      setToken( res)
     }
     async function registerUserAndGetToken(){
       let res = await JoblyApi.registerUserAndGetToken(user.username,user.password, user.firstName, user.lastName, user.email, 'post')
       localStorage.setItem('token', JSON.stringify(res))
-      setToken('token', res)
+      setToken( res)
     }
     // if there is no one logged in and the token is empty, get a token and update the value of token triggering the below use effect
     if(user.loggedIn !== false && token!== ''){
