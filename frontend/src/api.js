@@ -74,7 +74,7 @@ class JoblyApi {
     // destructrue values of username and pasword into data obj
     let res = await this.request(`auth/register`, {username, password, firstName, lastName, email}, "post");
     console.log(res)
-    JoblyApi.token = res.token;
+    JoblyApi.token = res.token; 
     return res.token;
   }
 

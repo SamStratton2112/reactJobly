@@ -15,7 +15,6 @@ const LoginForm = ()=>{
             [name]: value
         }))
     }
-    console.log(formData)
     // set user to most recent inputs 
     const handleSubmit= e=>{
         e.preventDefault()

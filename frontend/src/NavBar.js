@@ -4,7 +4,6 @@ import JoblyContext from "./JoblyContext";
 
 const NavBar = () =>{
     const {loggedIn, user} = useContext(JoblyContext)
-    console.log('nav loggedIn:', loggedIn)
     return(
         <div >
             {loggedIn !== true? 

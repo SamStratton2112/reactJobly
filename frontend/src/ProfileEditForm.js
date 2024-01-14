@@ -1,5 +1,16 @@
+import {useEffect, useContext} from 'react';
+import JoblyContext from './JoblyContext'
+import {useNavigate} from'react-router-dom'
+
 const ProfileEditForm = ()=>{
-    
+    const nav= useNavigate()
+    const {loggedIn} = useContext(JoblyContext)
+    useEffect(()=>{
+        if(!loggedIn){
+            alert('Please log in to see jobs')
+            nav('/')
+        }
+    },[loggedIn])
     return(
         <form>
             <label htmlFor="username">Username:</label>

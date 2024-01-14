@@ -2,18 +2,21 @@ import CompanyCard from "./CompanyCard";
 import { useContext, useState, useEffect } from "react";
 import JoblyContext from "./JoblyContext";
 import JoblyApi from "./api";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 
 const CompanyList = ()=>{
+    const nav=useNavigate()
     // get list of companies from context
-    const {companies} = useContext(JoblyContext);
+    const {companies, loggedIn} = useContext(JoblyContext);
     // use state to track and update value of form
     const [formCo, setFormCo] = useState('');
     // use state to replace formCo with handle compatible version
     const [currHandle, setCurrHandle] = useState()
     // use allCos to show companies results or search results 
     const [allCos, setAllCos] =useState([])
+    // track initial render 
     const [initialRender, setInitialRender] = useState(true)
 
     // update value of input field
@@ -43,6 +46,13 @@ const CompanyList = ()=>{
         setInitialRender(false)
         setFormCo('')
     }
+
+    useEffect(()=>{
+        if(!loggedIn){
+            alert('Please log in to see companies')
+            nav('/')
+        }
+    },[loggedIn])
 
     // ensure allCos is an array
     let res = [allCos]

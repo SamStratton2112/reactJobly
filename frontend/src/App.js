@@ -39,9 +39,7 @@ function App() {
         setLoggedIn(true)
       }
     }
-    }, [loggedIn, token])
-    console.log(token)
-    console.log(loggedIn)
+    }, [loggedIn, token, user])
 
   useEffect(()=>{
     //  get companies and jobs if there is a token
@@ -54,14 +52,15 @@ function App() {
       setJobs(jobs)
     }
     //get companies and jobs if token is not empty
-    if(token !== ''){
+    if(token !== null){
       getCompanies()
       getJobs()
     }
-  },[token])
+  },[token, user])
   console.log('token:',token)
   console.log(localStorage)
   console.log('LoggedIn:', loggedIn)
+  console.log('user:', user)
   useEffect(()=>{
     setToken(localStorage.getItem('token'))
   }, [loggedIn])
