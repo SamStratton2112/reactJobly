@@ -6,7 +6,7 @@ import JoblyContext from './JoblyContext';
 import JoblyApi from './api';
 
 function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState('')
   const [jobs, setJobs] = useState([])
   const [companies, setCompanies] = useState([])
 
@@ -22,13 +22,13 @@ function App() {
     getCompanies()
     getJobs()
   }, [])
-  console.log(companies, jobs)
+  console.log(companies)
 
   return (
     <div className="App">
       <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies}}>
         <NavBar/>
-        <JoblyRoutes/>
+        <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>
     </div>
   );
