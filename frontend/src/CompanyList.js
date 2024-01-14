@@ -6,7 +6,7 @@ import JoblyApi from "./api";
 
 const CompanyList = ()=>{
     // get list of companies from context
-    const {companies} = useContext(JoblyContext);
+    const {companies, token} = useContext(JoblyContext);
     // use state to track and update value of form
     const [formCo, setFormCo] = useState('');
     // use state to replace formCo with handle compatible version

@@ -8,6 +8,7 @@ import LoginForm from './LoginForm';
 import ProfileEditForm from './ProfileEditForm';
 import { useContext } from 'react';
 import JoblyContext from './JoblyContext';
+import Logout from './Logout';
 
 const JoblyRoutes = () =>{
     // get all companies from context
@@ -24,7 +25,8 @@ const JoblyRoutes = () =>{
         <Route exact key="jobs" path ='/jobs' element={<JobList/>}/>
         <Route exact key="signup" path='/signup' element={<SignupForm/>}/>
         <Route exact key="login" path='/login' element={<LoginForm/>}/>
-        <Route exact key="edit" path='/profile' element={<ProfileEditForm/>}/>
+        {/* <Route exact key="edit" path='/profile' element={<ProfileEditForm/>}/> */}
+        <Route exact key="logout" path='/logout' element={<Logout/>}/>
         <Route path='*' key="*" element={<Navigate to='/'/>}/>
     </Routes>
     )

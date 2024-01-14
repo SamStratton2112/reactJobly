@@ -11,7 +11,8 @@ const SignupForm = ()=>{
         const {name, value} = e.target;
         // udate formData values from inputs
         setFormData(data=>({
-            ...data, 
+            ...data,
+            loggedIn : true, 
             [name]: value
         }))
     }

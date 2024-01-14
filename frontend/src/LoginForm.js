@@ -12,6 +12,7 @@ const LoginForm = ()=>{
         // udate formData values from inputs
         setFormData(data=>({
             ...data, 
+            loggedIn : true,
             [name]: value
         }))
     }
