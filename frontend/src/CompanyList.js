@@ -52,7 +52,7 @@ const CompanyList = ()=>{
             alert('Please log in to see companies')
             nav('/')
         }
-    },[loggedIn])
+    },[loggedIn, nav])
 
     // ensure allCos is an array
     let res = [allCos]

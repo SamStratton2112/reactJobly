@@ -95,9 +95,14 @@ function App() {
   console.log('APP jobs',jobs)
   console.log('APP token',token)
 
+  // Apply to a job
+  // useEffect(()=>{
+    
+  // },[])
+
   return (
     <div className="App">
-      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails, needsUpdate, setFirstRender}}>
+      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails, needsUpdate, setFirstRender}}>
         <NavBar/>
         <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>

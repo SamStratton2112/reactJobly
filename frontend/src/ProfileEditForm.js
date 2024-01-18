@@ -6,7 +6,6 @@ const ProfileEditForm = ()=>{
     const nav= useNavigate()
     const {userDetails, setUserDetails, loggedIn, needsUpdate} = useContext(JoblyContext)
     const [formData, setFormData] = useState({firstName: userDetails.firstName, lastName: userDetails.lastName, email: userDetails.email, password: '', isAdmin: userDetails.isAdmin, username: userDetails.username})
-    const [submitFormData, setSubmitFormData] = useState()
     useEffect(()=>{
         if(!loggedIn){
             alert('Please log in to see jobs')
@@ -65,7 +64,7 @@ const ProfileEditForm = ()=>{
             <br/>
             <label htmlFor="password">Password:</label>
             <input
-                type='text'
+                type='password'
                 id='password'
                 name='password'
                 onChange={handleChange}
