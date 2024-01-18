@@ -19,6 +19,7 @@ function App() {
   const [jobs, setJobs] = useState([])
   const [companies, setCompanies] = useState([])
   const [firstRender, setFirstRender]= useState(false)
+  const [update, needsUpdate] = useState(false)
   console.log(firstRender)
   // ensure that request doesn't fire if it is the first render 
   useEffect(()=>{
@@ -76,16 +77,17 @@ function App() {
   },[loggedIn, user])
 
   // edit user 
-  // useEffect(()=>{
-  //   async function updateUser(){
-  //     let res = await JoblyApi.updateUser(userDetails.username, userDetails.firstName, userDetails.lastName, userDetails.email)
-  //     console.log(res)
-  //     setUserDetails(data=>({...res, password : data.password}))
-  //   }
-  //   if(JoblyApi.token !==undefined && userDetails!== ''){
-  //     updateUser()
-  //   }
-  // }, [userDetails])
+  useEffect(()=>{
+    async function updateUser(){
+      let res = await JoblyApi.updateUser(userDetails.username, {firstName: userDetails.firstName, lastName: userDetails.lastName, email: userDetails.email})
+      console.log('res', res)
+    }
+    if(update === true){
+    // if(JoblyApi.token !==undefined && userDetails!== ''){
+      updateUser(userDetails)
+      needsUpdate(false)
+    }
+  }, [userDetails, update])
 
   console.log('APP userD',userDetails)
   console.log('APP user',user)
@@ -95,7 +97,7 @@ function App() {
 
   return (
     <div className="App">
-      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails}}>
+      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails, needsUpdate}}>
         <NavBar/>
         <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>

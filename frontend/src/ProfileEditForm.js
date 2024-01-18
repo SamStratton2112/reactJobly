@@ -4,8 +4,8 @@ import {useNavigate} from'react-router-dom'
 
 const ProfileEditForm = ()=>{
     const nav= useNavigate()
-    const {userDetails, setUserDetails, loggedIn} = useContext(JoblyContext)
-    const [formData, setFormData] = useState({firstName: userDetails.firstName, lastName: userDetails.lastName, email: userDetails.email, password: ''})
+    const {userDetails, setUserDetails, loggedIn, needsUpdate} = useContext(JoblyContext)
+    const [formData, setFormData] = useState({firstName: userDetails.firstName, lastName: userDetails.lastName, email: userDetails.email, password: '', isAdmin: userDetails.isAdmin, username: userDetails.username})
     const [submitFormData, setSubmitFormData] = useState()
     useEffect(()=>{
         if(!loggedIn){
@@ -13,7 +13,7 @@ const ProfileEditForm = ()=>{
             nav('/')
         }
     },[nav, loggedIn])
-
+    
     const handleChange = e =>{
         console.log(e)
         const {name, value} = e.target;
@@ -27,9 +27,10 @@ const ProfileEditForm = ()=>{
     // submit check form data
     const handleSubmit = e =>{
         e.preventDefault()
-        console.log(formData)
-        console.log(submitFormData)
-        nav('/')
+        console.log('FORM DATA',formData)
+        needsUpdate(true)
+        setUserDetails(formData)
+        // nav('/')
     }
 
     console.log(userDetails)
