@@ -7,19 +7,11 @@ import JoblyContext from "./JoblyContext";
 
 // destructure company obj from parent props 
 const CompanyDetails = ({company}) =>{
-    // initialize state jobs and setJobs
-    // const {token} = useContext(JoblyContext)
-    // const nav = useNavigate()
-    // if(token === undefined){
-    //     alert('NOT AUTHORIZED')
-    //     nav('/')
-    // }
     const [jobs, setJobs] = useState([])
     useEffect(()=>{
         // use JoblyApi request to get company details which includes jobs
         async function getCompany(){
             let jobRes = await JoblyApi.getCompany(company.handle);
-            console.log(jobRes.jobs)
             setJobs(jobRes.jobs)
         }
         // execute function

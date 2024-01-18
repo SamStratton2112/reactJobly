@@ -4,20 +4,20 @@ import {useNavigate} from 'react-router-dom'
 import JoblyApi from "./api";
 
 const Logout = ()=>{
-    const {setUser, user, setToken, setLoggedIn} = useContext(JoblyContext)
+    const {setUser, user, setUserDetails, setToken, setLoggedIn} = useContext(JoblyContext)
     const nav = useNavigate()
     const logout = () =>{
         // reset api token 
-        JoblyApi.token=''
+        JoblyApi.token= null
         // clear storage
         localStorage.clear()
-        // set state
+        // clear user 
+        setToken(null)
         setLoggedIn(false)
-        // clear token state
-        setToken('')
-        // clear user state 
         setUser({username: '', 
         password: ''})
+        setUserDetails({username: '', 
+        password: '', firstName: '', lastName: '', email: ''})
         // reditect home with logout navbar
         nav('/')
     }

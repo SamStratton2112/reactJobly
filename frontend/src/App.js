@@ -4,42 +4,53 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import JoblyContext from './JoblyContext';
 import JoblyApi from './api';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
   // move logged in out of current state so we can use it to determine if someone is looged in
+  const nav=useNavigate()
   const [user, setUser] = useState({username: '', 
   password: ''})
   const [loggedIn, setLoggedIn] = useState(false);
-
+  const [userDetails, setUserDetails] = useState({username: '', 
+  password: '', firstName: '', lastName: '', email: ''})
   // on initial render token will be null
   const [token, setToken] = useState()
   const [jobs, setJobs] = useState([])
   const [companies, setCompanies] = useState([])
-
-  // whenever a user logs in request a token and store it 
+  const [firstRender, setFirstRender]= useState(false)
+  console.log(firstRender)
+  // ensure that request doesn't fire if it is the first render 
+  useEffect(()=>{
+    if(token === undefined){
+      setFirstRender(true)
+    }
+  },[])
+  
+  // whenever a user logs in or registers request a token and store it in JoblyApi.token
   useEffect(()=>{
     async function getUserToken(){
       let res = await JoblyApi.getUserToken(user.username,user.password, 'post')
       localStorage.setItem('token', JSON.stringify(res))
+      console.log(res)
       setToken(res)
+      setLoggedIn(true)
     }
     async function registerUserAndGetToken(){
       let res = await JoblyApi.registerUserAndGetToken(user.username,user.password, user.firstName, user.lastName, user.email, 'post')
       localStorage.setItem('token', JSON.stringify(res))
       setToken(res)
+      setLoggedIn(true)
     }
-    // if there is no one logged in and the token is empty, get a token and update the value of token triggering the below use effect
-    if(loggedIn !== false && token!==''){
+    if(firstRender !== false && token=== undefined){
       // if the user does not have username property getUserToken(), else registerUserAndGetToken()
-      if(user.firstName){
-        registerUserAndGetToken()
-        setLoggedIn(true)
-      }else{
+      if(user.firstName!==''){
         getUserToken()
-        setLoggedIn(true)
+      }else{
+        registerUserAndGetToken()
       }
     }
-    }, [loggedIn, token, user])
+    }, [token, user])
 
   useEffect(()=>{
     //  get companies and jobs if there is a token
@@ -51,23 +62,40 @@ function App() {
       let jobs = await JoblyApi.getJobs();
       setJobs(jobs)
     }
+    async function getUser(){
+      let res = await JoblyApi.getUser(user.username)
+      console.log('getUser', res)
+      setUserDetails(res)
+    }
     //get companies and jobs if token is not empty
-    if(token !== null){
+    if(loggedIn === true){
       getCompanies()
       getJobs()
+      getUser()
     }
-  },[token, user])
-  console.log('token:',token)
-  console.log(localStorage)
-  console.log('LoggedIn:', loggedIn)
-  console.log('user:', user)
-  useEffect(()=>{
-    setToken(localStorage.getItem('token'))
-  }, [loggedIn])
+  },[loggedIn, user])
+
+  // edit user 
+  // useEffect(()=>{
+  //   async function updateUser(){
+  //     let res = await JoblyApi.updateUser(userDetails.username, userDetails.firstName, userDetails.lastName, userDetails.email)
+  //     console.log(res)
+  //     setUserDetails(data=>({...res, password : data.password}))
+  //   }
+  //   if(JoblyApi.token !==undefined && userDetails!== ''){
+  //     updateUser()
+  //   }
+  // }, [userDetails])
+
+  console.log('APP userD',userDetails)
+  console.log('APP user',user)
+  console.log('APP companies',companies)
+  console.log('APP jobs',jobs)
+  console.log('APP token',token)
 
   return (
     <div className="App">
-      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn}}>
+      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails}}>
         <NavBar/>
         <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>

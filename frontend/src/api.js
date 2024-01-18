@@ -16,6 +16,7 @@ class JoblyApi {
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
+    console.log('API TOKEN', JoblyApi.token)
 
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
@@ -55,12 +56,6 @@ class JoblyApi {
     return res.jobs;
   }
 
-  /** Get list of all users */
-  static async getUsers() {
-    let res = await this.request(`users`);
-    return res.users;
-  }
-
   // get user token 
   static async getUserToken(username, password) {
     // destructrue values of username and pasword into data obj
@@ -81,16 +76,15 @@ class JoblyApi {
   /** Get a users details by username*/
   static async getUser(username) {
     let res = await this.request(`users/${username}`);
-    console.log(res)
-    // return res.user;
+    console.log('user', res)
+    return res.user;
   }
   
-  // static async updateUser(username, data, method="patch"){
-  //   let res = await this.request(`users/${username}`);
-  //   return res.user;
-  // }
+  static async updateUser(username, firstName, lastName, email){
+    let res = await this.request(`users/${username}`, {username, firstName, lastName, email}, "patch");
+    return res.user;
+  }
 }
-
 // for now, put token ("testuser" / "password" on class)
 // JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RhZG1pbiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcwNTA5MTU3NX0.RLe5rxTtqMEnmv9aE9KxAWhXTSiL4QWeFr_ly5sTuS0";
 

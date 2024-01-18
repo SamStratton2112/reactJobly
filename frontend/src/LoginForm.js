@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 const LoginForm = ()=>{
     const nav = useNavigate()
-    const {setUser, setLoggedIn} = useContext(JoblyContext);
+    const {setUser} = useContext(JoblyContext);
     const [formData, setFormData] = useState('')
     // handle form input changes
     const handleChange = e =>{
@@ -19,11 +19,13 @@ const LoginForm = ()=>{
     const handleSubmit= e=>{
         e.preventDefault()
         // update user information to submitted form data
-        setLoggedIn(true)
         setUser(formData)
+        if(formData.username===''){
+            alert('Invalid Username or password!')
+        }
         nav('/')
     }
-
+    console.log(formData)
     return(
         <form onSubmit={handleSubmit}>
             <label htmlFor="username">Username: </label>

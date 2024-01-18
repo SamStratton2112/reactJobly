@@ -1,36 +1,47 @@
-import {useEffect, useContext} from 'react';
+import {useEffect, useContext, useState} from 'react';
 import JoblyContext from './JoblyContext'
 import {useNavigate} from'react-router-dom'
 
 const ProfileEditForm = ()=>{
     const nav= useNavigate()
-    const {loggedIn} = useContext(JoblyContext)
+    const {userDetails, setUserDetails, loggedIn} = useContext(JoblyContext)
+    const [formData, setFormData] = useState({firstName: userDetails.firstName, lastName: userDetails.lastName, email: userDetails.email, password: ''})
+    const [submitFormData, setSubmitFormData] = useState()
     useEffect(()=>{
         if(!loggedIn){
             alert('Please log in to see jobs')
             nav('/')
         }
-    },[loggedIn])
+    },[nav, loggedIn])
+
+    const handleChange = e =>{
+        console.log(e)
+        const {name, value} = e.target;
+        // udate formData values from inputs
+        setFormData(data=>({
+            ...data, 
+            [name]: value
+        }))
+    }
+
+    // submit check form data
+    const handleSubmit = e =>{
+        e.preventDefault()
+        console.log(formData)
+        console.log(submitFormData)
+        nav('/')
+    }
+
+    console.log(userDetails)
     return(
-        <form>
-            <label htmlFor="username">Username:</label>
-            <input
-                type='text'
-                id='username'
-                name='username'
-                placeholder="Username"
-                // value={user.username}
-                // onChange={handleChange}
-            />
-            <br/>
+        <form onSubmit={handleSubmit}>
             <label htmlFor="firstName">First Name:</label>
             <input
                 type='text'
                 id='firstName'
                 name='firstName'
-                placeholder="First Name"
-                // value={user.firstName}
-                // onChange={handleChange}
+                value={formData.firstName}
+                onChange={handleChange}
             />
             <br/>
             <label htmlFor="lastName">Last Name:</label>
@@ -38,9 +49,8 @@ const ProfileEditForm = ()=>{
                 type='text'
                 id='lastName'
                 name='lastName'
-                placeholder="Last Name"
-                // value={user.lastName}
-                // onChange={handleChange}
+                value={formData.lastName}
+                onChange={handleChange}
             />
             <br/>
             <label htmlFor="email">Email:</label>
@@ -48,9 +58,16 @@ const ProfileEditForm = ()=>{
                 type='text'
                 id='email'
                 name='email'
-                placeholder="Email"
-                // value={user.email}
-                // onChange={handleChange}
+                value={formData.email}
+                onChange={handleChange}
+            />
+            <br/>
+            <label htmlFor="password">Password:</label>
+            <input
+                type='text'
+                id='password'
+                name='password'
+                onChange={handleChange}
             />
             <br/>
             <button>submit</button>
