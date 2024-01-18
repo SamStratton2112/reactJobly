@@ -2,10 +2,10 @@ import { useContext } from "react";
 import JoblyContext from "./JoblyContext";
 
 const Home = () =>{
-    const {user} = useContext(JoblyContext);
+    const {user, token} = useContext(JoblyContext);
     return(
         <div>
-            {user.loggedIn?<div>Welcom back {user.username}!</div> : <div>Welcome to Jobly!</div>}
+            {token!==undefined ?<div>Welcom back {user.username}!</div> : <div>Welcome to Jobly!</div>}
         </div>
     )
 }

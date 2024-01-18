@@ -18,7 +18,9 @@ function App() {
   const [companies, setCompanies] = useState([])
   const [firstRender, setFirstRender]= useState(true)
   const [update, needsUpdate] = useState(false)
-  console.log(firstRender)
+  const [currJobId, setCurrJobId] = useState(null)
+  const [apps, setApps] = useState(userDetails.applications)
+
   // ensure that request doesn't fire if it is the first render 
   useEffect(()=>{
     if(token === undefined){
@@ -66,6 +68,7 @@ function App() {
       let res = await JoblyApi.getUser(user.username)
       console.log('getUser', res)
       setUserDetails(res)
+      setApps(userDetails.apps)
     }
     //get companies and jobs if token is not empty
     if(loggedIn === true){
@@ -88,21 +91,26 @@ function App() {
     }
   }, [userDetails, update])
 
-  
-  console.log('APP userD',userDetails)
-  console.log('APP user',user)
-  console.log('APP companies',companies)
-  console.log('APP jobs',jobs)
-  console.log('APP token',token)
-
   // Apply to a job
-  // useEffect(()=>{
-    
-  // },[])
+  useEffect(()=>{
+    async function applyJob(){
+      await JoblyApi.applyJob({username: user.username, jobId: currJobId})
+    }
+    async function getUser(){
+      let res = await JoblyApi.getUser(user.username)
+      console.log('getUser', res)
+      setUserDetails(res)
+    }
+    if(currJobId!==null){
+      applyJob()
+      setCurrJobId(null)
+      getUser()
+    }
+  },[user, currJobId])
 
   return (
     <div className="App">
-      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails, needsUpdate, setFirstRender}}>
+      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, loggedIn, setLoggedIn, setUserDetails, setToken, setCurrJobId, userDetails, needsUpdate, setFirstRender}}>
         <NavBar/>
         <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>

@@ -1,29 +1,27 @@
-import { useContext } from "react"
+import { useContext} from "react"
 import JoblyContext from "./JoblyContext"
+import { useNavigate } from "react-router-dom"
 
 const JobCard = ({job})=>{
-    const {userDetails} = useContext(JoblyContext)
-    const handleApply = ()=>{
-        
-    }
-    let apps = userDetails.applications
-    console.log(apps)
-    for(let app of apps){
-        if(app === job.id){
-            console.log('TRUE', job.id, job.title)
-            console.log(app)
-        }
-    }
+    const nav = useNavigate()
+    const {userDetails, setCurrJobId} = useContext(JoblyContext)
     
+    const handleApply = (id)=>{
+        setCurrJobId(id)
+        nav('/')
+        alert('Applications successful!')
+    }
+    let userApps = userDetails.applications
+
     return(
         <div>
             <p>{job.title}</p>
             <p>Salary: {job.salary}</p>
             <p>Equity: {job.equity}</p>
-            {apps.includes(job.id)?
+            {userApps.includes(job.id)?
             null
             :
-            <button>Apply</button>}
+            <button onClick={()=>handleApply(job.id)}>Apply</button>}
         </div>
     )
 }
