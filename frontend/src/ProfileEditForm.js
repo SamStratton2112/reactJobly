@@ -30,7 +30,7 @@ const ProfileEditForm = ()=>{
         console.log('FORM DATA',formData)
         needsUpdate(true)
         setUserDetails(formData)
-        // nav('/')
+        nav('/')
     }
 
     console.log(userDetails)

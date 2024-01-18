@@ -4,11 +4,9 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import JoblyContext from './JoblyContext';
 import JoblyApi from './api';
-import { useNavigate } from 'react-router-dom';
 
 function App() {
   // move logged in out of current state so we can use it to determine if someone is looged in
-  const nav=useNavigate()
   const [user, setUser] = useState({username: '', 
   password: ''})
   const [loggedIn, setLoggedIn] = useState(false);
@@ -18,13 +16,13 @@ function App() {
   const [token, setToken] = useState()
   const [jobs, setJobs] = useState([])
   const [companies, setCompanies] = useState([])
-  const [firstRender, setFirstRender]= useState(false)
+  const [firstRender, setFirstRender]= useState(true)
   const [update, needsUpdate] = useState(false)
   console.log(firstRender)
   // ensure that request doesn't fire if it is the first render 
   useEffect(()=>{
     if(token === undefined){
-      setFirstRender(true)
+      setFirstRender(false)
     }
   },[])
   
@@ -43,7 +41,8 @@ function App() {
       setToken(res)
       setLoggedIn(true)
     }
-    if(firstRender !== false && token=== undefined){
+    if(user.username !== ''){
+      console.log('LOGIN USER', user)
       // if the user does not have username property getUserToken(), else registerUserAndGetToken()
       if(user.firstName!==''){
         getUserToken()
@@ -51,7 +50,7 @@ function App() {
         registerUserAndGetToken()
       }
     }
-    }, [token, user])
+    }, [ user])
 
   useEffect(()=>{
     //  get companies and jobs if there is a token
@@ -97,7 +96,7 @@ function App() {
 
   return (
     <div className="App">
-      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails, needsUpdate}}>
+      <JoblyContext.Provider value ={{user, setUser, jobs, setJobs, companies, setCompanies, setToken, loggedIn, setLoggedIn, setUserDetails, setToken, userDetails, needsUpdate, setFirstRender}}>
         <NavBar/>
         <JoblyRoutes companies={companies}/>
       </JoblyContext.Provider>
