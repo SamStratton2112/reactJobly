@@ -24,7 +24,7 @@ function App() {
     if(token === undefined){
       setFirstRender(false)
     }
-  },[])
+  },[token])
   
   // whenever a user logs in or registers request a token and store it in JoblyApi.token
   useEffect(()=>{
@@ -88,6 +88,7 @@ function App() {
     }
   }, [userDetails, update])
 
+  
   console.log('APP userD',userDetails)
   console.log('APP user',user)
   console.log('APP companies',companies)
